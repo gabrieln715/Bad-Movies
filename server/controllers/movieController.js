@@ -1,10 +1,18 @@
-const movieModel = require('../models/movieModel.js');
-const apiHelpers = require('../helpers/apiHelpers.js');
+const movieModel = require("../models/movieModel.js");
+const apiHelpers = require("../helpers/apiHelpers.js");
+const { API_KEY } = require("../../config.js");
+const axios = require("axios");
+
+console.log(API_KEY);
 
 //Return requests to the client
 module.exports = {
   getSearch: (req, res) => {
-    // get the search genre     
+    console.log(req);
+
+    res.sendStatus(200);
+
+    // get the search genre
 
     // https://www.themoviedb.org/account/signup
     // get your API KEY
@@ -17,15 +25,14 @@ module.exports = {
   },
   getGenres: (req, res) => {
     // make an axios request to get the list of official genres
-    
+    axios
+      .get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`)
+      .then(data => res.send(data.data.genres))
+      .catch(err => res.sendStatus(500));
     // use this endpoint, which will also require your API key: https://api.themoviedb.org/3/genre/movie/list
-    
+
     // send back
   },
-  saveMovie: (req, res) => {
-
-  },
-  deleteMovie: (req, res) => {
-
-  }
-}
+  saveMovie: (req, res) => {},
+  deleteMovie: (req, res) => {}
+};
