@@ -9,7 +9,7 @@ class Genrelist extends React.Component {
   }
 
   render() {
-    return <option value={this.props.genre}>{this.props.genre}</option>;
+    return <option value={this.props.genre.id}>{this.props.genre.name}</option>;
   }
 }
 

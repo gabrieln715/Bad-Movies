@@ -8,9 +8,13 @@ console.log(API_KEY);
 //Return requests to the client
 module.exports = {
   getSearch: (req, res) => {
-    console.log(req);
-
-    res.sendStatus(200);
+    let genre = req.query.query;
+    axios
+      .get(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=vote_average.asc&include_adult=false&include_video=false&page=1&vote_count.gte=100&with_genres=${genre}&with_original_language=en`
+      )
+      .then(data => res.send(data.data))
+      .catch(err => res.sendStatus(500));
 
     // get the search genre
 

@@ -9,7 +9,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      movies: [{ deway: "movies" }],
+      movies: [],
       favorites: [{ deway: "favorites" }],
       showFaves: false
     };
@@ -26,10 +26,14 @@ class App extends React.Component {
     axios
       .get("movies/search", {
         params: {
-          movie: movie
+          query: movie
         }
       })
-      .then(data => console.log("done"))
+      .then(data =>
+        this.setState({
+          movies: data.data.results
+        })
+      )
       .catch(err => console.err(err));
   }
 
@@ -61,12 +65,19 @@ class App extends React.Component {
             showFaves={this.state.showFaves}
             getMovies={this.getMovies}
           />
-          <Movies
-            movies={
-              this.state.showFaves ? this.state.favorites : this.state.movies
-            }
-            showFaves={this.state.showFaves}
-          />
+          <ul className="movies">
+            {this.state.movies.map(movie => {
+              return (
+                <Movies
+                  movie={
+                    // this.state.showFaves ? this.state.favorites : this.state.movies
+                    movie
+                  }
+                  showFaves={this.state.showFaves}
+                />
+              );
+            })}
+          </ul>
         </div>
       </div>
     );

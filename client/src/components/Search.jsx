@@ -18,7 +18,12 @@ class Search extends React.Component {
       .get("movies/genres")
       .then(data => {
         this.setState({
-          genres: data.data.map(genre => genre.name)
+          genres: data.data.map(genre => genre)
+        });
+      })
+      .then(data => {
+        this.setState({
+          genre: this.state.genres[0].id
         });
       })
       .catch(err => console.err(err));
@@ -45,9 +50,9 @@ class Search extends React.Component {
         </button>
         <br />
         <br />
-        <select value={this.state.genre} onChange={this.handleChange}>
-          {this.state.genres.map((genre, index) => (
-            <Genrelist key={index} genre={genre} />
+        <select value={this.state.genre.name} onChange={this.handleChange}>
+          {this.state.genres.map(genre => (
+            <Genrelist key={genre.id} genre={genre} />
           ))}
         </select>
         <br />
