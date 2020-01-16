@@ -13,14 +13,15 @@ class Movies extends React.Component {
 
   render() {
     return (
-      <li className="movie_item">
+      <li
+        className="movie_item"
+        onClick={() => this.props.saveMovie(this.props.movie)}
+      >
         <img
           src={`http://image.tmdb.org/t/p/w185//${this.props.movie.poster_path}`}
         />
         <div className="movie_description">
-          <h2>
-            {this.props.movie.title} {console.log(this.props.movie)}
-          </h2>
+          <h2>{this.props.movie.title}</h2>
           <section className="movie_details">
             <div className="movie_year">
               <span className="title">Release Date</span>
