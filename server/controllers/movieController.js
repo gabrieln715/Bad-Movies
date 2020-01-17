@@ -8,11 +8,10 @@ module.exports = {
   getSearch: (req, res) => {
     // get the search genre
     let genre = req.query.ID;
-
     Axios.get(
-      `https://api.themoviedb.org/3/discover/movie?api_key=5e0285c54cd057a31c6b449c4556adad&language=en-US&sort_by=vote_average.asc&include_adult=false&include_video=false&page=1&vote_count.gte=250&with_genres=${genre}&with_original_language=en`
+      `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&page=1&vote_count.gte=250&with_genres=${genre}&with_original_language=en`
     )
-      .then(data => res.send(data.results))
+      .then(data => res.send(data.data.results))
       .catch(err => console.log(err));
     // https://www.themoviedb.org/account/signup
     // get your API KEY

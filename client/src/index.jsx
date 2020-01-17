@@ -10,8 +10,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      movies: [{ deway: "movies" }],
-      favorites: [{ deway: "favorites" }],
+      movies: [],
+      favorites: [],
       showFaves: false
     };
 
@@ -28,7 +28,8 @@ class App extends React.Component {
         ID: genre
       }
     })
-      .then(data => console.log("get request data", data.data))
+      .then(data => this.setState({ movies: data.data }))
+      .then(() => console.log(this.state.movies))
       .catch(err => console.log(err));
   }
 
@@ -51,7 +52,7 @@ class App extends React.Component {
     return (
       <div className="app">
         <header className="navbar">
-          <h1>Bad Movies</h1>
+          <h1>Best Movies</h1>
         </header>
 
         <div className="main">
@@ -60,12 +61,19 @@ class App extends React.Component {
             showFaves={this.state.showFaves}
             getMovies={this.getMovies}
           />
-          <Movies
-            movies={
-              this.state.showFaves ? this.state.favorites : this.state.movies
-            }
-            showFaves={this.state.showFaves}
-          />
+          <ul className="movies">
+            {this.state.movies.map(movie => {
+              return (
+                <Movies
+                  movie={
+                    // this.state.showFaves ? this.state.favorites : movie
+                    movie
+                  }
+                  showFaves={this.state.showFaves}
+                />
+              );
+            })}
+          </ul>
         </div>
       </div>
     );
