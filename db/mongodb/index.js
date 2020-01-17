@@ -48,8 +48,14 @@ let save = movie => {
   });
 };
 
-let deleteMovie = movie => {
-  console.log(movie);
+let deleteMovie = (movie, callback) => {
+  User.deleteOne(movie, (err) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(console.log('success'));
+    }
+  });
 };
 
 let find = callback => {

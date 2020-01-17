@@ -41,12 +41,16 @@ class App extends React.Component {
   saveMovie(movie) {
     axios
       .post("/movies/save", movie)
-      .then(() => console.log("save movie done"))
+      // .then(() => console.log("save movie done"))
       .catch(err => console.log(err));
   }
 
-  deleteMovie() {
-    // same as above but do something diff
+  deleteMovie(movie) {
+    console.log(movie.id);
+    axios
+      .delete("/movies/delete", { data: { id: movie.id } })
+      .then(() => this.loadFavorites())
+      .catch(err => console.log(err));
   }
 
   swapFavorites() {
@@ -56,17 +60,19 @@ class App extends React.Component {
     });
   }
 
-  loadFavorites(favs) {
-    this.setState({
-      favorites: favs.data
-    });
+  loadFavorites() {
+    axios
+      .get("/movies/load")
+      .then(data =>
+        this.setState({
+          favorites: data.data
+        })
+      )
+      .catch(err => console.log(err));
   }
 
   componentDidMount() {
-    axios
-      .get("/movies/load")
-      .then(data => this.loadFavorites(data))
-      .catch(err => console.log(err));
+    this.loadFavorites();
   }
 
   render() {
@@ -81,19 +87,21 @@ class App extends React.Component {
             swapFavorites={this.swapFavorites}
             showFaves={this.state.showFaves}
             getMovies={this.getMovies}
+            loadFavorites={this.loadFavorites}
+            deleteMovie={this.deleteMovie}
           />
           <ul className="movies">
-            {console.log(this.state.movies, "favs")}
-            {this.state.favorites.map(movie => {
+            {(this.state.showFaves
+              ? this.state.favorites
+              : this.state.movies
+            ).map(movie => {
               return (
                 <Movies
                   key={movie.id}
-                  movie={
-                    // this.state.showFaves ? this.state.favorites : this.state.movies
-                    movie
-                  }
+                  movie={movie}
                   showFaves={this.state.showFaves}
                   saveMovie={this.saveMovie}
+                  deleteMovie={this.deleteMovie}
                 />
               );
             })}

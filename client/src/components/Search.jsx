@@ -43,6 +43,7 @@ class Search extends React.Component {
       <div className="search">
         <button
           onClick={() => {
+            this.props.loadFavorites();
             this.props.swapFavorites();
           }}
         >

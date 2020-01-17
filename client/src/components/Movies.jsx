@@ -15,7 +15,11 @@ class Movies extends React.Component {
     return (
       <li
         className="movie_item"
-        onClick={() => this.props.saveMovie(this.props.movie)}
+        onClick={() =>
+          this.props.showFaves
+            ? this.props.deleteMovie(this.props.movie)
+            : this.props.saveMovie(this.props.movie)
+        }
       >
         <img
           src={`http://image.tmdb.org/t/p/w185//${this.props.movie.poster_path}`}
