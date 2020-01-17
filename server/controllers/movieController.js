@@ -28,6 +28,7 @@ module.exports = {
     res.sendStatus(201);
   },
   deleteMovie: (req, res) => {
+    console.log(req.body);
     db.deleteMovie(req.body, err => {
       if (err) {
         res.sendStatus(500);
