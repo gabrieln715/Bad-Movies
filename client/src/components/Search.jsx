@@ -1,34 +1,68 @@
-import React from 'react';
+import React from "react";
+import Axios from "axios";
 
 class Search extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      genres: []
+      genres: [],
+      genre: undefined
     };
+    this.handleChange = this.handleChange.bind(this);
   }
   getGenres() {
-    //make an axios request in this component to get the list of genres from your endpoint GET GENRES
+    Axios.get("/movies/genres")
+      .then(data => {
+        this.setState({
+          genres: data.data
+        });
+      })
+      .then(() => this.setState({ genre: this.state.genres[0].id }))
+      .catch(err => console.log(err));
+  }
+
+  handleChange(event) {
+    this.setState({
+      genre: event.target.value
+    });
+    console.log(event.target.value);
+  }
+
+  componentDidMount() {
+    this.getGenres();
   }
 
   render() {
     return (
       <div className="search">
-        <button onClick={() => {this.props.swapFavorites()}}>{this.props.showFaves ? "Show Results" : "Show Favorites"}</button>
-        <br/><br/>
+        <button
+          onClick={() => {
+            this.props.swapFavorites();
+          }}
+        >
+          {this.props.showFaves ? "Show Results" : "Show Favorites"}
+        </button>
+        <br />
+        <br />
 
         {/* Make the select options dynamic from genres !!! */}
         {/* How can you tell which option has been selected from here? */}
 
-        <select>
-          <option value="theway">The Way</option>
-          <option value="thisway">This Way</option>
-          <option value="thatway">That Way</option>
+        <select value={this.state.genre} onChange={this.handleChange}>
+          {this.state.genres.map((genre, index) => {
+            return (
+              <option key={index} value={genre.id}>
+                {genre.name}
+              </option>
+            );
+          })}
         </select>
-        <br/><br/>
+        <br />
+        <br />
 
-        <button>Search</button>
-
+        <button onClick={() => this.props.getMovies(this.state.genre)}>
+          Search
+        </button>
       </div>
     );
   }
