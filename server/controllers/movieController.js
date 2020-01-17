@@ -27,7 +27,15 @@ module.exports = {
     db.save(req.body);
     res.sendStatus(201);
   },
-  deleteMovie: (req, res) => {},
+  deleteMovie: (req, res) => {
+    db.deleteMovie(req.body, err => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.sendStatus(201);
+      }
+    });
+  },
   getFavorites: (req, res) => {
     db.find((err, data) => {
       if (err) {
@@ -35,7 +43,6 @@ module.exports = {
       } else {
         res.send(data);
       }
-    })
+    });
   }
-
 };
