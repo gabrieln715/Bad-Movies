@@ -29,16 +29,27 @@ class App extends React.Component {
       }
     })
       .then(data => this.setState({ movies: data.data }))
-      .then(() => console.log(this.state.movies))
       .catch(err => console.log(err));
   }
 
-  saveMovie() {
-    // same as above but do something diff
+  saveMovie(movie) {
+    Axios.post("/movies/save", movie)
+      .then(data =>
+        this.setState({ favorites: this.state.favorites.concat(data.data) })
+      )
+      .catch(err => console.log(err));
   }
 
-  deleteMovie() {
-    // same as above but do something diff
+  deleteMovie(movie) {
+    Axios.delete("/movies/delete", { params: { data: movie } })
+      .then(() => this.getFavorites())
+      .catch(err => console.log(err));
+  }
+
+  getFavorites() {
+    Axios.get("/movies/favorites")
+      .then(data => this.setState({ favorites: data.data }))
+      .catch(err => console.log(err));
   }
 
   swapFavorites() {
@@ -46,6 +57,11 @@ class App extends React.Component {
     this.setState({
       showFaves: !this.state.showFaves
     });
+  }
+
+  componentDidMount() {
+    this.getMovies(28);
+    this.getFavorites();
   }
 
   render() {
@@ -62,14 +78,17 @@ class App extends React.Component {
             getMovies={this.getMovies}
           />
           <ul className="movies">
-            {this.state.movies.map(movie => {
+            {(this.state.showFaves
+              ? this.state.favorites
+              : this.state.movies
+            ).map(movie => {
               return (
                 <Movies
-                  movie={
-                    // this.state.showFaves ? this.state.favorites : movie
-                    movie
-                  }
+                  key={movie.id}
+                  movie={movie}
                   showFaves={this.state.showFaves}
+                  saveMovie={this.saveMovie}
+                  deleteMovie={this.deleteMovie}
                 />
               );
             })}

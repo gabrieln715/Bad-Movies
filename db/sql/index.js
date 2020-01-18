@@ -15,29 +15,27 @@ const sequelize = new Sequelize(
 
 // sequelize.query("CREATE DATABASE IF NOT EXISTS DBName;");
 
-console.log("here");
 const User = sequelize.define("User", {
   // Model attributes are defined here
   poster_path: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.STRING
   },
-  movieId: {
+  id: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    primaryKey: true
   },
   title: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.STRING
   },
   vote_average: {
-    type: Sequelize.INTEGER,
-    allowNull: false
+    type: Sequelize.INTEGER
   },
   release_date: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.STRING
   }
 });
 
-User.sync({ force: true });
+User.sync({ force: false });
+
+module.exports.User = User;
+module.exports.sequelize = sequelize;

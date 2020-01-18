@@ -25,7 +25,6 @@ class Search extends React.Component {
     this.setState({
       genre: event.target.value
     });
-    console.log(event.target.value);
   }
 
   componentDidMount() {

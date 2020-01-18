@@ -2,6 +2,7 @@ const movieModel = require("../models/movieModel.js");
 const apiHelpers = require("../helpers/apiHelpers.js");
 const Axios = require("axios");
 const { API_KEY } = require("../../config.js");
+const sqlDb = require("../../db/sql");
 
 //Return requests to the client
 module.exports = {
@@ -31,6 +32,23 @@ module.exports = {
 
     // send back
   },
-  saveMovie: (req, res) => {},
-  deleteMovie: (req, res) => {}
+  saveMovie: (req, res) => {
+    // console.log(req.body);
+    movieModel
+      .save(req.body)
+      .then(data => res.send(data.dataValues))
+      .catch(err => console.log("err"));
+  },
+  deleteMovie: (req, res) => {
+    movieModel
+      .delete(req.query.data)
+      .then(() => res.sendStatus(200))
+      .catch(err => console.log(err));
+  },
+  getFavorites: (req, res) => {
+    movieModel
+      .find()
+      .then(data => res.send(data))
+      .catch(err => console.log(err));
+  }
 };
